@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.example.android.mygarden.PlantWateringService;
 import com.example.android.mygarden.R;
 import com.example.android.mygarden.provider.PlantContract;
 
@@ -64,6 +65,8 @@ public class AddPlantActivity extends AppCompatActivity {
         contentValues.put(PlantContract.PlantEntry.COLUMN_CREATION_TIME, timeNow);
         contentValues.put(PlantContract.PlantEntry.COLUMN_LAST_WATERED_TIME, timeNow);
         getContentResolver().insert(PlantContract.PlantEntry.CONTENT_URI, contentValues);
+        //使得小部件处于最新状态,数据库发生改变,更新小部件,插入数据,删除数据以及浇水状态
+        PlantWateringService.startActionUpdatePlantWidget(this);
         // Close this activity
         finish();
     }

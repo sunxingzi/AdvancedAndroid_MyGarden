@@ -29,6 +29,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.android.mygarden.PlantWateringService;
 import com.example.android.mygarden.R;
 import com.example.android.mygarden.provider.PlantContract;
 import com.example.android.mygarden.utils.PlantUtils;
@@ -73,6 +74,8 @@ public class PlantDetailActivity extends AppCompatActivity
         contentValues.put(PlantContract.PlantEntry.COLUMN_LAST_WATERED_TIME, timeNow);
         getContentResolver().update(SINGLE_PLANT_URI, contentValues, null, null);
         cursor.close();
+        //使得小部件处于最新状态,数据库发生改变,更新小部件,插入数据,
+        PlantWateringService.startActionUpdatePlantWidget(this);
     }
 
     @Override
@@ -125,6 +128,8 @@ public class PlantDetailActivity extends AppCompatActivity
         Uri SINGLE_PLANT_URI = ContentUris.withAppendedId(
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_PLANTS).build(), mPlantId);
         getContentResolver().delete(SINGLE_PLANT_URI, null, null);
+        //使得小部件处于最新状态,数据库发生改变,更新小部件,插入数据,删除数据以及浇水状态
+        PlantWateringService.startActionUpdatePlantWidget(this);
         finish();
     }
 }

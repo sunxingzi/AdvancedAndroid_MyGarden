@@ -27,7 +27,7 @@ import com.example.android.mygarden.ui.MainActivity;
 
 public class PlantWidgetProvider extends AppWidgetProvider {
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,int imgRes,
                                 int appWidgetId) {
 
         // Create an Intent to launch MainActivity when clicked
@@ -35,6 +35,8 @@ public class PlantWidgetProvider extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.plant_widget);
+        //update image
+        views.setImageViewResource(R.id.widget_plant_image,imgRes);
         // Widgets allow click handlers to only launch pending intents
         views.setOnClickPendingIntent(R.id.widget_plant_image, pendingIntent);
         //  (4): Create a PendingIntent for the PlantWateringService and setOnClickPendingIntent for widget_water_button
@@ -50,9 +52,11 @@ public class PlantWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        for (int appWidgetId : appWidgetIds) {
+       /* for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
+        }*/
+
+       PlantWateringService.startActionUpdatePlantWidget(context);
     }
 
     @Override
@@ -63,6 +67,12 @@ public class PlantWidgetProvider extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         // Perform any action when an AppWidget for this provider is instantiated
+    }
+
+    public static void updatePlantWidgets(Context context,AppWidgetManager appWidgetManager,int imgRes, int[] appWidgetIds){
+        for (int appWidgetId :appWidgetIds ) {
+            updateAppWidget(context,appWidgetManager,imgRes,appWidgetId);
+        }
     }
 
     @Override
