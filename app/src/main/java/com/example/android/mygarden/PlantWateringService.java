@@ -55,10 +55,10 @@ public class PlantWateringService extends IntentService {
      *
      * @see IntentService
      */
-    public static void startActionWaterPlant(Context context,long plantId) {
+    public static void startActionWaterPlant(Context context, long plantId) {
         Intent intent = new Intent(context, PlantWateringService.class);
         intent.setAction(ACTION_WATER_PLANT);
-        intent.putExtra(EXTRA_PLANT_ID,plantId);
+        intent.putExtra(EXTRA_PLANT_ID, plantId);
         context.startService(intent);
     }
 
@@ -106,6 +106,7 @@ public class PlantWateringService extends IntentService {
                 contentValues,
                 PlantContract.PlantEntry.COLUMN_LAST_WATERED_TIME + ">?",
                 new String[]{String.valueOf(timeNow - PlantUtils.MAX_AGE_WITHOUT_WATER)});
+        startActionUpdatePlantWidgets(this);
     }
 
 
@@ -131,7 +132,7 @@ public class PlantWateringService extends IntentService {
             int createTimeIndex = cursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_CREATION_TIME);
             int waterTimeIndex = cursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_LAST_WATERED_TIME);
             int plantTypeIndex = cursor.getColumnIndex(PlantContract.PlantEntry.COLUMN_PLANT_TYPE);
-           plantId = cursor.getLong(cursor.getColumnIndex(PlantContract.PlantEntry._ID));
+            plantId = cursor.getLong(cursor.getColumnIndex(PlantContract.PlantEntry._ID));
             long timeNow = System.currentTimeMillis();
             long wateredAt = cursor.getLong(waterTimeIndex);
             long createdAt = cursor.getLong(createTimeIndex);
@@ -144,6 +145,6 @@ public class PlantWateringService extends IntentService {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(this, PlantWidgetProvider.class));
         //Now update all widgets
-        PlantWidgetProvider.updatePlantWidgets(this, appWidgetManager, imgRes,plantId,canWater, appWidgetIds);
+        PlantWidgetProvider.updatePlantWidgets(this, appWidgetManager, imgRes, plantId, canWater, appWidgetIds);
     }
 }
