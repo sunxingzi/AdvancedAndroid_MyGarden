@@ -1,5 +1,6 @@
 # My Garden
 #联系git 在featureA特性分支上
+#continue practice
 This is the toy app for the Widgets lesson of the [Advanced Android App Development course on Udacity](https://www.udacity.com/course/advanced-android-app-development--ud855).
 
 ## The app
